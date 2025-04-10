@@ -57,7 +57,6 @@ export const register = async (req, res) => {
         message: "Account created successfully",
         advice:
           "Please verify your email at earliest, you have 30 minutes to verify yourself",
-        registrationToken,
         data: user,
       });
     } else if (role === "seller") {
@@ -68,7 +67,6 @@ export const register = async (req, res) => {
         message: "Account created successfully",
         advice:
           "Please verify your email at earliest, you have 10 minutes to verify yourself",
-        registrationToken,
         data: user,
       });
     }
@@ -104,8 +102,9 @@ export const login = async (req, res) => {
           message: "Incorrect password",
         });
       } else if (passwordCheck && user.isVerified === true) {
-        const existing = await sessionSchema.findOne({ userId: user._id });
-        await sessionSchema.deleteOne(existing);
+        await sessionSchema.findOneAndDelete({
+          userId: user._id,
+        });
         await sessionSchema.create({ userId: user._id });
 
         const accessToken = jwt.sign(
