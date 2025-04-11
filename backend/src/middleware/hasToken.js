@@ -2,7 +2,8 @@ import jwt from "jsonwebtoken";
 import buyerSchema from "../models/buyerSchema.js";
 import sellerSchema from "../models/sellerSchema.js";
 import sessionSchema from "../models/sessionSchema.js";
-import { logout } from "../controllers/auth/userController.js";
+import { logout } from "../controllers/auth/userLogout.js";
+
 
 export const hasToken = async (req, res, next) => {
   try {
