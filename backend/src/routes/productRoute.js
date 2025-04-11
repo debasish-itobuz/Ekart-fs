@@ -6,6 +6,7 @@ import { productValidateSchema } from "../validators/productValidate.js";
 import { getAllProducts } from "../controllers/product/getProducts.js";
 import { getProductById } from "../controllers/product/getProductById.js";
 import updateProduct from "../controllers/product/updateProduct.js";
+import { deleteProduct } from "../controllers/product/deleteProduct.js";
 
 const productRoute = express.Router();
 
@@ -18,5 +19,6 @@ productRoute.post(
 productRoute.get("/getAll", hasToken, getAllProducts);
 productRoute.get("/getById/:id", hasToken, getProductById);
 productRoute.put("/update/:id", hasToken, updateProduct);
+productRoute.delete("/delete/:id", hasToken, deleteProduct);
 
 export default productRoute;

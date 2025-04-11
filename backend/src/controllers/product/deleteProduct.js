@@ -1,38 +1,29 @@
 import productSchema from "../../models/productSchema.js";
 
-export const updateProduct = async (req, res) => {
+export const deleteProduct = async (req, res) => {
   try {
-    const { name, category, description, price } = req.body;
-    const sellerId = req.userId;
-    console.log(name, category, description, price, sellerId);
-
     const productId = req.params.id;
-    console.log(productId);
+    const sellerId = req.userId;
+
     if (req.role !== "seller")
       return res.status(401).json({
         success: false,
         message: "unauthorised access",
       });
-    const product = await productSchema.findOne({
+
+    const product = await productSchema.findOneAndDelete({
       sellerId: sellerId,
       _id: productId,
     });
     if (!product) {
       return res.status(404).json({
         success: false,
-        message: "Product not found",
+        message: "no such product found",
       });
     }
-    product.name = name;
-    product.category = category;
-    product.description = description;
-    product.price = price;
-    await product.save();
-    console.log(product);
-
     return res.status(200).json({
       success: true,
-      message: "product updated successfully",
+      message: "Product deleted successfully",
       data: product,
     });
   } catch (error) {
@@ -42,5 +33,3 @@ export const updateProduct = async (req, res) => {
     });
   }
 };
-
-export default updateProduct;
