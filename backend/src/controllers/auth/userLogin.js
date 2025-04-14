@@ -61,6 +61,7 @@ export const login = async (req, res) => {
           accessToken: accessToken,
           refreshToken: refreshToken,
           data: user,
+          role,
         });
       } else {
         res.status(200).json({
