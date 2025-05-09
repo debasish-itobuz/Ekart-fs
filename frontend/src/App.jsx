@@ -7,6 +7,7 @@ import ErrorPage from './pages/ErrorPage';
 import Home from './pages/Home';
 import CreateProduct from './components/CreateProduct';
 import EditProduct from './components/EditProduct';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
 function App() {
 
 
@@ -23,6 +24,7 @@ function App() {
           <Route path='/home' element={<Home />} />
           <Route path='/editProduct' element={<EditProduct />} />
           <Route path='/createProduct' element={<CreateProduct />} />
+          <Route path='/paymentSuccess' element={<PaymentSuccessPage />} />
 
         </Routes>
       </BrowserRouter>

@@ -18,7 +18,7 @@ const Register = () => {
     });
     const params = useParams()
     const role = params.role
-    console.log("role", role)
+    // console.log("role", role)
     const [toggle, setToggle] = useState(false);
     const onError = (errors, e) => console.log(errors, e);
     const onSubmit = async (data) => {
@@ -102,7 +102,7 @@ const Register = () => {
                                                 required
                                             />
                                             <FaEyeSlash
-                                                className="absolute inset-y-3 right-2"
+                                                className="absolute inset-y-3 right-2 w-[20px]"
                                                 onClick={() => setToggle(true)}
                                             />
                                         </div>
@@ -114,7 +114,7 @@ const Register = () => {
                                             required
                                         />
                                         <FaEye
-                                            className="absolute inset-y-3 right-2"
+                                            className="absolute inset-y-3 right-2 w-[20px]"
                                             onClick={() => setToggle(false)}
                                         />
                                     </div>)}

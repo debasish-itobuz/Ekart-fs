@@ -83,11 +83,13 @@ const Login = () => {
                                                 type="password"
                                                 {...register("password")}
                                                 required
+
                                             />
                                             <FaEyeSlash
-                                                className="absolute inset-y-3 right-2"
+                                                className="absolute inset-y-3 right-2 w-[20px]"
                                                 onClick={() => setToggle(true)}
                                             />
+
                                         </div>
                                     ) : (<div className="relative">
                                         <input
@@ -97,7 +99,7 @@ const Login = () => {
                                             required
                                         />
                                         <FaEye
-                                            className="absolute inset-y-3 right-2"
+                                            className="absolute inset-y-3 right-2 w-[20px]"
                                             onClick={() => setToggle(false)}
                                         />
                                     </div>)}

@@ -12,7 +12,7 @@ const EditProduct = () => {
     resolver: yupResolver(productValidateSchema)
   })
   const { id } = useContext(myContext)
-  console.log("id", id)
+  // console.log("id", id)
   const accessToken = localStorage.getItem("accessToken")
   const navigate = useNavigate()
 

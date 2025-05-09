@@ -5,11 +5,27 @@ import Card from '../components/Card'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { Link } from 'react-router-dom'
+// import { myContext } from '../context/myContext'
+
+const loadScript = (src) => {
+    return new Promise((resolve) => {
+        const script = document.createElement('script')
+        script.src = src
+        script.onload = () => {
+            resolve(true)
+        }
+        script.onerror = () => {
+            resolve(false)
+        }
+        document.body.appendChild(script)
+    })
+}
 
 const Home = () => {
     const [product, setProduct] = useState([])
     const accessToken = localStorage.getItem("accessToken")
     const role = localStorage.getItem("role")
+    // const { id } = useContext(myContext)
     // const [selectedState, setSelectedState] = useState("")
     // console.log(selectedState);
 
@@ -33,6 +49,60 @@ const Home = () => {
         getAll();
     }, [])
 
+
+
+
+    const handlePayNow = async (id, amount) => {
+
+        const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js')
+
+        if (!res) {
+            alert('Razorpay failed to load!!')
+            return
+        }
+
+        const { data: { key } } = await axios.get("http://localhost:8000/api/payment/getKey")
+        console.log(key)
+        const { data: { data } } = await axios.post(`http://localhost:8000/payment/paymentCheckout/${id}`, { amount }, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        console.log('data', data)
+        const options = {
+            key: key,
+            amount: data.amount,
+            currency: "INR",
+            name: "Ekart",
+            description: "Test Transaction",
+            image: "https://example.com/your_logo",
+            order_id: data.id,
+            callback_url: "http://localhost:8000/payment/paymentVerification",
+            notes: { "address": "Razorpay Corporate Office" },
+            theme: { "color": "orange" }
+        };
+
+        const paymentObject = new window.Razorpay(options);
+
+
+        paymentObject.on("payment.failed", async (response) => {
+            try {
+                console.log("my ressss", response);
+                const order_id = response.error.metadata.order_id;
+                const payment_id = response.error.metadata.payment_id;
+                console.log("oooo", order_id);
+                console.log("pay", payment_id);
+                await axios.post(
+                    `http://localhost:8000/payment/paymentFailed/${order_id}/${payment_id}`,{}
+                );
+            } catch (error) {
+                console.log("my error", error);
+            }
+        });
+
+
+        paymentObject.open();
+    }
 
     return (<>
 
@@ -98,7 +168,7 @@ const Home = () => {
         <div className='flex justify-center flex-wrap gap-6 mt-20'>
             {
                 product.map((item, index) => {
-                    return <Card key={index} name={item.name} productId={item._id} category={item.category} description={item.description} price={item.price} getAll={getAll} />
+                    return <Card key={index} name={item.name} productId={item._id} category={item.category} description={item.description} price={item.price} getAll={getAll} handlePayNow={handlePayNow} />
                 })
             }
         </div>

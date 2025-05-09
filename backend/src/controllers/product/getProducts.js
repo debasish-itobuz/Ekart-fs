@@ -23,7 +23,7 @@ import productSchema from "../../models/productSchema.js";
 export const getAllProducts = async (req, res) => {
   try {
     const { userId, role } = req;
-    console.log(userId, role);
+    // console.log(userId, role);
     let totalProducts = [];
     if (role === "buyer") {
       const data = await productSchema.find({});

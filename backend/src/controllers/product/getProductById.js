@@ -3,7 +3,7 @@ import productSchema from "../../models/productSchema.js";
 export const getProductById = async (req, res) => {
   try {
     const { userId, role } = req;
-    console.log(userId, role);
+    // console.log(userId, role);
     const productId = req.params.id;
 
     const data = await productSchema.findOne({ _id: productId });
