@@ -40,7 +40,7 @@ const EditProduct = () => {
 
   }
 
-  const updateNote = async (data) => {
+  const updateProduct = async (data) => {
     try {
       const res = await axios.put(`http://localhost:8000/product/update/${id}`, data, {
         headers: {
@@ -49,7 +49,7 @@ const EditProduct = () => {
       })
       console.log("res", res);
       toast.success("Product updated Successfully")
-      navigate("/home")
+      navigate("/seller")
 
     } catch (error) {
       toast.error(error.response.data.message)
@@ -57,7 +57,7 @@ const EditProduct = () => {
   }
 
   const handleCancel = () => {
-    navigate('/home')
+    navigate('/seller')
   }
 
 
@@ -68,7 +68,7 @@ const EditProduct = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(updateNote)}>
+      <form onSubmit={handleSubmit(updateProduct)}>
         <div className="max-w-xl mx-auto mt-16 flex w-full flex-col border rounded-lg bg-white p-8">
           <div className="mb-6">
             <label htmlFor="title" className="text-sm font-semibold leading-7 text-gray-600 mt-3">

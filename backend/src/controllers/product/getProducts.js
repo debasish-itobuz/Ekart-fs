@@ -23,7 +23,7 @@ import productSchema from "../../models/productSchema.js";
 export const getAllProducts = async (req, res) => {
   try {
     const { userId, role } = req;
-    // console.log(userId, role);
+    console.log("print", userId, role);
     let totalProducts = [];
     if (role === "buyer") {
       const data = await productSchema.find({});
@@ -39,6 +39,8 @@ export const getAllProducts = async (req, res) => {
         success: true,
         message: "Products fetched successfully",
         data: totalProducts,
+        role,
+        userId,
       });
     }
   } catch (error) {
@@ -48,5 +50,3 @@ export const getAllProducts = async (req, res) => {
     });
   }
 };
-
-

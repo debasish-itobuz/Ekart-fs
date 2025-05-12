@@ -23,7 +23,7 @@ const CreateProduct = () => {
             })
             console.log("res", res)
             toast.success("Product added successfully")
-            navigate("/home")
+            navigate("/seller")
 
         } catch (error) {
             toast.error(error.response.data.message)
@@ -32,7 +32,7 @@ const CreateProduct = () => {
     }
 
     const handleCancel = () => {
-        navigate("/home")
+        navigate("/seller")
     }
 
     return (

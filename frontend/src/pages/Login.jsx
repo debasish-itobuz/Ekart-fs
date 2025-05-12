@@ -30,7 +30,10 @@ const Login = () => {
                 localStorage.setItem("loginStatus", "true");
                 toast.success("Logged In successfully");
                 reset();
-                navigate("/home");
+                const getRole = localStorage.getItem("role");
+                getRole==="buyer"?navigate("/buyer"):navigate("/seller");
+                
+                
             } else {
                 toast.error(res.data.message || "Login failed. Please try again.");
             }

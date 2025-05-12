@@ -62,7 +62,7 @@ const PaymentSuccessPage = () => {
 
           <div className="text-center">
             <button
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/buyer")}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Continue Shopping
