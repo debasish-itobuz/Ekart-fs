@@ -1,11 +1,9 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import Card from '../components/Card'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { Link } from 'react-router-dom'
-// import { myContext } from '../context/myContext'
 
 const loadScript = (src) => {
     return new Promise((resolve) => {
@@ -22,10 +20,7 @@ const loadScript = (src) => {
 }
 
 const Buyer = () => {
-    // const [product, setProduct] = useState([])
     const accessToken = localStorage.getItem("accessToken")
-    // const role = localStorage.getItem("role")
-
 
     const [product, setProduct] = useState([])
     const [text, setText] = useState("")
@@ -78,7 +73,6 @@ const Buyer = () => {
             getAll(page)
         }
     }
-
 
 
     useEffect(() => {

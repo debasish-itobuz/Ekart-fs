@@ -24,7 +24,7 @@ const EditProduct = () => {
           Authorization: `Bearer ${accessToken}`
         }
       })
-      // console.log("note", res);
+      // console.log("product", res);
       const name = res.data.data.name
       const category = res.data.data.category
       const description = res.data.data.description

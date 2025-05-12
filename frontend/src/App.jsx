@@ -24,7 +24,6 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/buyer' element={<Buyer />} />
           <Route path='/seller' element={<Seller />} />
-
           <Route path='/editProduct' element={<EditProduct />} />
           <Route path='/createProduct' element={<CreateProduct />} />
           <Route path='/paymentSuccess' element={<PaymentSuccessPage />} />

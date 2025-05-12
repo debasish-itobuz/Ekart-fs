@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
@@ -31,9 +31,9 @@ const Login = () => {
                 toast.success("Logged In successfully");
                 reset();
                 const getRole = localStorage.getItem("role");
-                getRole==="buyer"?navigate("/buyer"):navigate("/seller");
-                
-                
+                getRole === "buyer" ? navigate("/buyer") : navigate("/seller");
+
+
             } else {
                 toast.error(res.data.message || "Login failed. Please try again.");
             }
