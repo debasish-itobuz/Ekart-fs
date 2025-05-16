@@ -1,5 +1,4 @@
 import express from "express";
-import createProduct from "../controllers/product/createProduct.js";
 import { hasToken } from "../middleware/hasToken.js";
 import { validateData } from "../middleware/validateData.js";
 import { productValidateSchema } from "../validators/productValidate.js";
@@ -8,19 +7,23 @@ import { getProductById } from "../controllers/product/getProductById.js";
 import updateProduct from "../controllers/product/updateProduct.js";
 import { deleteProduct } from "../controllers/product/deleteProduct.js";
 import { searchSortPaginateProduct } from "../controllers/product/sortSearchPaginate.js";
+import { upload } from "../controllers/product/fileController.js";
+import { createProduct } from "../controllers/product/createProduct.js";
 
 const productRoute = express.Router();
 
+productRoute.get("/getAll", hasToken, getAllProducts);
+productRoute.get("/getById/:id", hasToken, getProductById);
+// productRoute.put("/update/:id", hasToken, updateProduct);
+productRoute.put("/update/:id", hasToken, upload.single("pic"), updateProduct);
+productRoute.delete("/delete/:id", hasToken, deleteProduct);
+productRoute.get("/searchSortPaginate", hasToken, searchSortPaginateProduct);
+// productRoute.put("/update/:id", hasToken, updateProduct);
 productRoute.post(
   "/create",
   hasToken,
+  upload.single("pic"),
   validateData(productValidateSchema),
   createProduct
 );
-productRoute.get("/getAll", hasToken, getAllProducts);
-productRoute.get("/getById/:id", hasToken, getProductById);
-productRoute.put("/update/:id", hasToken, updateProduct);
-productRoute.delete("/delete/:id", hasToken, deleteProduct);
-productRoute.get("/searchSortPaginate", hasToken, searchSortPaginateProduct);
-
 export default productRoute;

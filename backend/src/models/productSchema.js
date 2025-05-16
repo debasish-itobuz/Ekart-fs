@@ -26,6 +26,10 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  pic: {
+    type: String,
+    default: "",
+  },
 });
 
 export default mongoose.model("product", productSchema);

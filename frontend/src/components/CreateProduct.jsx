@@ -4,6 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { productValidateSchema } from '../validators/productValidate';
+import { useState } from 'react';
 
 const CreateProduct = () => {
 
@@ -13,12 +14,25 @@ const CreateProduct = () => {
 
     const navigate = useNavigate()
     const accessToken = localStorage.getItem("accessToken")
+    const [file, setFile] = useState("")
 
     const createProduct = async (data) => {
+        const formData = new FormData();
+
+        if (file !== "") {
+            formData.append("pic", file)
+        }
+        formData.append("price", data.price)
+        formData.append("description", data.description)
+        formData.append("category", data.category)
+        formData.append("name", data.name)
+
+
         try {
-            const res = await axios.post("http://localhost:8000/product/create", data, {
+            const res = await axios.post("http://localhost:8000/product/create", formData, {
                 headers: {
-                    Authorization: `Bearer ${accessToken}`
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "multipart/form-data"
                 }
             })
             console.log("res", res)
@@ -35,6 +49,10 @@ const CreateProduct = () => {
         navigate("/seller")
     }
 
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+        console.log(file)
+    }
     return (
         <div>
             <div>
@@ -88,6 +106,8 @@ const CreateProduct = () => {
                             />
                             <p className='text-xs text-red-600 font-semibold'>{formState.errors.price?.message}</p>
                         </div>
+                        <input type='file' accept=".png, .jpg, .jpeg" onChange={handleFileChange} />
+
                         <div className='flex justify-center gap-5'>
 
                             <button className="rounded border-0 mt-5 bg-indigo-500 py-2 px-6 text-lg text-white hover:bg-indigo-600 focus:outline-none" type='submit'>

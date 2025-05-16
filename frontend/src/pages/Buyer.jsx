@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import Card from '../components/Card'
+// import Card from '../components/Card'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import BuyerCard from '../components/BuyerCard'
 
 const loadScript = (src) => {
     return new Promise((resolve) => {
@@ -174,15 +175,15 @@ const Buyer = () => {
         </div>
 
 
-        <div className='flex justify-center mx-auto flex-wrap gap-6 mt-20 w-[1300px]'>
+        <div className='flex justify-center mx-auto flex-wrap gap-6 mt-5 w-[1300px]'>
             {
                 product.map((item, index) => {
-                    return <Card key={index} name={item.name} productId={item._id} category={item.category} description={item.description} price={item.price} getAll={getAll} handlePayNow={handlePayNow} />
+                    return <BuyerCard key={index} name={item.name} productId={item._id} category={item.category} description={item.description} price={item.price} getAll={getAll} handlePayNow={handlePayNow} pic={item.pic} />
                 })
             }
         </div>
 
-        <div className="flex justify-center mt-10 gap-1">
+        <div className="flex justify-center mt-10 gap-1 mb-20">
             <button
                 type="button"
                 className="px-5 py-2.5 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none rounded-lg text-center disabled:opacity-50"

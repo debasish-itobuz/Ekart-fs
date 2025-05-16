@@ -47,10 +47,10 @@ const Seller = () => {
 
         </div>
 
-        <div className='flex justify-center mx-auto flex-wrap gap-6 mt-20 w-[1300px]'>
+        <div className='flex justify-center mx-auto flex-wrap gap-6 mt-10 w-[1300px]'>
             {
                 product.map((item, index) => {
-                    return <Card key={index} name={item.name} productId={item._id} category={item.category} description={item.description} price={item.price} getAll={getAll} />
+                    return <Card key={index} name={item.name} productId={item._id} category={item.category} description={item.description} price={item.price} getAll={getAll} pic={item.pic} />
                 })
             }
         </div>
