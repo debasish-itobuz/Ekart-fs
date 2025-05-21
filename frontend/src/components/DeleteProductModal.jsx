@@ -1,13 +1,14 @@
 import axios from 'axios'
-import React, { useContext } from 'react'
 import toast from 'react-hot-toast'
-import { myContext } from '../context/myContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAll } from '../features/ProductSlice'
 
-const DeleteProductModal = ({ setOpenDelModal, getAll }) => {
+const DeleteProductModal = ({ setOpenDelModal }) => {
 
     const accessToken = localStorage.getItem("accessToken")
-    const { id } = useContext(myContext)
+    const id = useSelector((state) => state.app.id)
 
+    const dispatch = useDispatch()
 
     const deleteProduct = async () => {
         try {
@@ -19,7 +20,7 @@ const DeleteProductModal = ({ setOpenDelModal, getAll }) => {
             console.log(res)
             setOpenDelModal(false)
             toast.success("Product deleted successfully")
-            getAll()
+            dispatch(getAll())
 
         } catch (error) {
             toast.error(error.response.data.message)

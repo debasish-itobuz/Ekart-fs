@@ -15,6 +15,8 @@ const CreateProduct = () => {
     const navigate = useNavigate()
     const accessToken = localStorage.getItem("accessToken")
     const [file, setFile] = useState("")
+    const [prevImage, setPrevImage] = useState("");
+
 
     const createProduct = async (data) => {
         const formData = new FormData();
@@ -50,8 +52,14 @@ const CreateProduct = () => {
     }
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-        console.log(file)
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+
+        if (selectedFile) {
+            const imageURL = URL.createObjectURL(selectedFile);
+            setPrevImage(imageURL); // ✅ Set a temporary image URL
+        }
+
     }
     return (
         <div>
@@ -107,6 +115,14 @@ const CreateProduct = () => {
                             <p className='text-xs text-red-600 font-semibold'>{formState.errors.price?.message}</p>
                         </div>
                         <input type='file' accept=".png, .jpg, .jpeg" onChange={handleFileChange} />
+
+                        {prevImage && (
+                            <div className="mb-4">
+                                <label className="text-sm font-semibold text-gray-600">Current Image</label>
+                                <img src={prevImage} alt="Current Product" className="h-32 w-32 object-cover rounded mt-2" />
+                            </div>
+                        )}
+
 
                         <div className='flex justify-center gap-5'>
 

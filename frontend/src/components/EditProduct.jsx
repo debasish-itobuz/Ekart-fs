@@ -1,20 +1,21 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { myContext } from '../context/myContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { productValidateSchema } from '../validators/productValidate';
+import { useSelector } from 'react-redux';
 
 const EditProduct = () => {
   const { register, handleSubmit, formState, setValue } = useForm({
     resolver: yupResolver(productValidateSchema)
   })
-  const { id } = useContext(myContext)
-  // console.log("id", id)
+  const id = useSelector((state) => state.app.id)
   const accessToken = localStorage.getItem("accessToken")
   const navigate = useNavigate()
+  const [file, setFile] = useState("");
+  const [prevImage, setPrevImage] = useState("");
 
   const getProduct = async () => {
     try {
@@ -24,16 +25,19 @@ const EditProduct = () => {
           Authorization: `Bearer ${accessToken}`
         }
       })
-      // console.log("product", res);
+      console.log("product recived", res);
       const name = res.data.data.name
       const category = res.data.data.category
       const description = res.data.data.description
       const price = res.data.data.price
+      const pic = res.data.data.pic
+      setPrevImage(pic);
 
       setValue('name', name)
       setValue('category', category)
       setValue('description', description)
       setValue('price', price)
+      setValue('pic', pic)
     } catch (error) {
       console.log(error)
     }
@@ -41,10 +45,22 @@ const EditProduct = () => {
   }
 
   const updateProduct = async (data) => {
+    const formData = new FormData();
+    console.log("my file", file);
+    if (file) {
+      formData.append("pic", file)
+    }
+    formData.append("price", data.price)
+    formData.append("description", data.description)
+    formData.append("category", data.category)
+    formData.append("name", data.name)
+    console.log("new data", formData);
+
     try {
-      const res = await axios.put(`http://localhost:8000/product/update/${id}`, data, {
+      const res = await axios.put(`http://localhost:8000/product/update/${id}`, formData, {
         headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "multipart/form-data"
         }
       })
       console.log("res", res);
@@ -60,11 +76,20 @@ const EditProduct = () => {
     navigate('/seller')
   }
 
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+
+    if (selectedFile) {
+      const imageURL = URL.createObjectURL(selectedFile);
+      setPrevImage(imageURL); // ✅ Set a temporary image URL
+    }
+
+  }
 
   useEffect(() => {
     getProduct()
   }, [id])
-
 
   return (
     <div>
@@ -118,6 +143,13 @@ const EditProduct = () => {
             />
             <p className='text-xs text-red-600 font-semibold'>{formState.errors.price?.message}</p>
           </div>
+          <input type='file' name='pic' {...register('pic')} accept=".png, .jpg, .jpeg" onChange={handleFileChange} />
+          {prevImage && (
+            <div className="mb-4">
+              <label className="text-sm font-semibold text-gray-600">Current Image</label>
+              <img src={prevImage} alt="Current Product" className="h-32 w-32 object-cover rounded mt-2" />
+            </div>
+          )}
           <div className='flex justify-center gap-5'>
 
             <button className="rounded border-0 mt-5 bg-indigo-500 py-2 px-6 text-lg text-white hover:bg-indigo-600 focus:outline-none" type='submit'>

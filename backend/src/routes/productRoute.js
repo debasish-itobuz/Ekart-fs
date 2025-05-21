@@ -14,11 +14,9 @@ const productRoute = express.Router();
 
 productRoute.get("/getAll", hasToken, getAllProducts);
 productRoute.get("/getById/:id", hasToken, getProductById);
-// productRoute.put("/update/:id", hasToken, updateProduct);
 productRoute.put("/update/:id", hasToken, upload.single("pic"), updateProduct);
 productRoute.delete("/delete/:id", hasToken, deleteProduct);
 productRoute.get("/searchSortPaginate", hasToken, searchSortPaginateProduct);
-// productRoute.put("/update/:id", hasToken, updateProduct);
 productRoute.post(
   "/create",
   hasToken,

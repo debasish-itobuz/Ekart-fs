@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
-// import Card from '../components/Card'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import BuyerCard from '../components/BuyerCard'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllProducts, setCurrentPage, setDebouncedSearch, setSortField, setSortOrder } from '../features/ProductSlice'
 
 const loadScript = (src) => {
     return new Promise((resolve) => {
@@ -22,65 +22,48 @@ const loadScript = (src) => {
 
 const Buyer = () => {
     const accessToken = localStorage.getItem("accessToken")
+    const dispatch = useDispatch()
 
-    const [product, setProduct] = useState([])
     const [text, setText] = useState("")
-    const [sortField, setSortField] = useState("name")
-    const [sortOrder, setSortOrder] = useState("asc")
-    const [debounce, setDebounce] = useState("")
-    const [currentPage, setCurrentPage] = useState(1)
-    const [totalPage, setTotalPage] = useState(1)
+
+    const sortOrder = useSelector((state) => state.app.sortOrder)
+    const sortField = useSelector((state) => state.app.sortField)
+    const currentPage = useSelector((state) => state.app.currentPage)
+    const debouncedSearch = useSelector((state) => state.app.debouncedSearch)
+    const totalPage = useSelector((state) => state.app.totalPage);
+    const { product } = useSelector((state) => state.app)
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            // console.log("my text", text);
-
-            setDebounce(text)
+            dispatch(setDebouncedSearch(text));
         }, 500)
         return () => clearTimeout(timer)
     }, [text])
 
 
-    const getAll = async (page = 1) => {
-        try {
-            const res = await axios.get(`http://localhost:8000/product/searchSortPaginate?sortField=${sortField}&sortOrder=${sortOrder}&searchText=${debounce}&page=${page}`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })
-            console.log("res", res)
-
-            setProduct(res.data.product)
-            setCurrentPage(res.data.pagination.currentPage)
-            setTotalPage(Math.max(1, res.data.pagination.totalPages));
-
-        } catch (error) {
-            toast.error(error.reponse.data.message)
+    useEffect(() => {
+        const params = {
+            sortField: sortField,
+            sortOrder: sortOrder,
+            searchText: debouncedSearch,
+            page: currentPage,
         }
-    }
+        dispatch(getAllProducts(params))
+    }, [sortField, sortOrder, debouncedSearch, currentPage])
 
     const handleSortChange = (e) => {
         const [field, order] = e.target.value.split("-");
         console.log(field, order)
-        setSortField(field)
-        setSortOrder(order)
+        dispatch(setSortField(field))
+        dispatch(setSortOrder(order))
     }
+
 
     const handlePageChange = (page) => {
-        // console.log("page val", page);
-
         if (page >= 1 && page <= totalPage) {
-            setCurrentPage(page)
-            getAll(page)
+            dispatch(setCurrentPage(page));
         }
-    }
-
-
-    useEffect(() => {
-        getAll(currentPage);
-    }, [sortField, sortOrder, debounce, currentPage])
-
-
+    };
 
 
     const handlePayNow = async (id, amount) => {
@@ -177,8 +160,8 @@ const Buyer = () => {
 
         <div className='flex justify-center mx-auto flex-wrap gap-6 mt-5 w-[1300px]'>
             {
-                product.map((item, index) => {
-                    return <BuyerCard key={index} name={item.name} productId={item._id} category={item.category} description={item.description} price={item.price} getAll={getAll} handlePayNow={handlePayNow} pic={item.pic} />
+                product?.map((item, index) => {
+                    return <BuyerCard key={index} name={item.name} productId={item._id} category={item.category} description={item.description} price={item.price} handlePayNow={handlePayNow} pic={item.pic} />
                 })
             }
         </div>

@@ -1,24 +1,13 @@
-import React from 'react'
 import { useState } from 'react'
-import { SlNote } from "react-icons/sl";
-import { FiTrash } from "react-icons/fi";
-// import { myContext } from "../context/myContext.jsx";
-// import { useNavigate } from 'react-router-dom';
-import DeleteProductModal from './DeleteProductModal.jsx';
-// import axios from 'axios';
-// import toast from 'react-hot-toast';
 
 export default function BuyerCard({ name, category, description, price, productId,  handlePayNow, pic }) {
         const [pics, setPics] = useState(pic);
         console.log("my pic", pics);
         console.log("my pic", setPics);
-
-        // const role = localStorage.getItem("role")
-        //     const accessToken = localStorage.getItem("accessToken")
         
-            const handleBuyNow = () => {
+        const handleBuyNow = () => {
                 handlePayNow(productId, price)
-            }
+        }
         
 
     return (

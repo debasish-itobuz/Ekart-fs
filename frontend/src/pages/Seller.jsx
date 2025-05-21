@@ -1,36 +1,18 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
-import Card from '../components/Card'
+import { useEffect } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { Link } from 'react-router-dom'
+import SellerCard from '../components/SellerCard'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAll } from '../features/ProductSlice'
 
 const Seller = () => {
-    const accessToken = localStorage.getItem("accessToken")
 
-    const [product, setProduct] = useState([])
-
-
-    const getAll = async () => {
-        try {
-            const res = await axios.get(`http://localhost:8000/product/getAll`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })
-            console.log("res", res)
-
-            setProduct(res.data.data)
-
-        } catch (error) {
-            toast.error(error.reponse.data.message)
-        }
-    }
-
+    const dispatch = useDispatch()
+    const { sellerProduct } = useSelector((state) => state.app)
 
     useEffect(() => {
-        getAll();
+        dispatch(getAll())
     }, [])
 
 
@@ -49,8 +31,8 @@ const Seller = () => {
 
         <div className='flex justify-center mx-auto flex-wrap gap-6 mt-10 w-[1300px]'>
             {
-                product.map((item, index) => {
-                    return <Card key={index} name={item.name} productId={item._id} category={item.category} description={item.description} price={item.price} getAll={getAll} pic={item.pic} />
+                sellerProduct.map((item, index) => {
+                    return <SellerCard key={index} name={item.name} productId={item._id} category={item.category} description={item.description} price={item.price} pic={item.pic} />
                 })
             }
         </div>

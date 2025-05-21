@@ -11,11 +11,9 @@ import Seller from './pages/Seller';
 import Buyer from './pages/Buyer';
 function App() {
 
-
   return (
     <>
       <BrowserRouter>
-
         <Routes>
           <Route path='/' element={<Cover />} />
           <Route path='*' element={<ErrorPage />} />
@@ -27,7 +25,6 @@ function App() {
           <Route path='/editProduct' element={<EditProduct />} />
           <Route path='/createProduct' element={<CreateProduct />} />
           <Route path='/paymentSuccess' element={<PaymentSuccessPage />} />
-
         </Routes>
       </BrowserRouter>
     </>

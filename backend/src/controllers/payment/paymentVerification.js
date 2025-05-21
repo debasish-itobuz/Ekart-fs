@@ -38,7 +38,6 @@ export const paymentVerification = async (req, res) => {
       order.status = "confirmed";
       await order.save();
 
-      // res.redirect("http://localhost:5173/home");
       res.redirect(
         `http://localhost:5173/paymentSuccess?reference=${razorpay_payment_id},${razorpay_order_id}`
       );
