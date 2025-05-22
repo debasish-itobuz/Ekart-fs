@@ -6,17 +6,11 @@ import DeleteProductModal from './DeleteProductModal.jsx';
 import { useDispatch } from 'react-redux';
 import { setId } from '../features/ProductSlice.js';
 
-const SellerCard = ({ name, category, description, price, productId, handlePayNow, pic }) => {
+const SellerCard = ({ name, category, description, price, productId, pic }) => {
     const dispatch = useDispatch();
     const [openDelModal, setOpenDelModal] = useState(false)
     let pics = pic
     const navigate = useNavigate()
-
-    const role = localStorage.getItem("role");
-
-    const handleBuyNow = () => {
-        handlePayNow(productId, price)
-    }
 
     const handleEdit = () => {
         dispatch(setId(productId));
@@ -46,39 +40,17 @@ const SellerCard = ({ name, category, description, price, productId, handlePayNo
                     <span className="font-semibold text-gray-800 dark:text-gray-50">Rs {price}</span>
                 </div>
 
-                {role === "seller" ? (
-                    <div className="flex justify-between items-center px-4 py-4 border-t border-gray-200 dark:border-gray-500">
-                        <button onClick={handleEdit} className="text-blue-600 dark:text-blue-300 hover:underline flex items-center gap-2">
-                            <SlNote className="text-xl" /> Edit
-                        </button>
-                        <button onClick={handleDelete} className="text-red-600 dark:text-red-300 hover:underline flex items-center gap-2">
-                            <FiTrash className="text-xl" /> Delete
-                        </button>
-                    </div>
-                ) : (
-                    <div className="mt-4 p-4 border-t border-gray-200 dark:border-gray-500">
-                        <button
-                            className="w-full flex justify-between items-center font-bold cursor-pointer hover:underline text-gray-800 dark:text-gray-50"
-                            onClick={handleBuyNow}
-                        >
-                            <span className="text-base">Buy Now</span>
-                            <svg
-                                className="h-6 w-6"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                />
-                            </svg>
-                        </button>
-                    </div>
-                )}
+
+                <div className="flex justify-between items-center px-4 py-4 border-t border-gray-200 dark:border-gray-500">
+                    <button onClick={handleEdit} className="text-blue-600 dark:text-blue-300 hover:underline flex items-center gap-2">
+                        <SlNote className="text-xl" /> Edit
+                    </button>
+                    <button onClick={handleDelete} className="text-red-600 dark:text-red-300 hover:underline flex items-center gap-2">
+                        <FiTrash className="text-xl" /> Delete
+                    </button>
+                </div>
+
+
             </article>
 
             {openDelModal && (

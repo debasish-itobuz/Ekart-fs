@@ -16,7 +16,6 @@ const Seller = () => {
     }, [])
 
 
-
     return (<>
 
         <Header />

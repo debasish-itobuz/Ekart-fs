@@ -4,7 +4,8 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon --exec \"npx eslint && nodemon server\"",
+    "start": "nodemon server",
+    "dev": "nodemon --exec \"npx eslint && nodemon server\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
