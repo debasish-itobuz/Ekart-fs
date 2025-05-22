@@ -14,8 +14,15 @@ export const createProduct = async (req, res) => {
 
     // Handle image if uploaded
     let imageUrl = "";
+    console.log("len", req.file);
+
     if (req.file) {
       imageUrl = `http://localhost:8000/uploads/${req.file.filename}`;
+    } else {
+      return res.status(404).send({
+        success: false,
+        message: "No product images uploaded. Please add images.",
+      });
     }
 
     const data = await productSchema.create({
