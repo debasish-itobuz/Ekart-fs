@@ -14,7 +14,7 @@ export const createProduct = async (req, res) => {
 
     // Ensure image is uploaded
     if (!req.file) {
-      return res.status(400).json({
+      return res.status(400).json({ 
         success: false,
         message: "No product image uploaded. Please add an image.",
       });
